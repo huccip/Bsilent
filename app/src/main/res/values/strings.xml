@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">Bsilent</string>
+    <string name="title_activity_picker">Map</string>
+
+    <string name="add_new_location">Add New Location</string>
+    <string name="is_loc_enable" translatable="false">is loc enabled</string>
+    <string name="on" translatable="false">On</string>
+    <string name="off" translatable="false">Off</string>
+    <string name="tag_key" translatable="false">tagkey</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="item_deleted">Item Deleted</string>
+    <string name="delete_all">Delete All</string>
+    <string name="places">Places</string>
+    <string name="schedules">Schedules</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="choose_start_time">Please Choose The Start Time</string>
+    <string name="choose_end_time">Please Choose The End Time</string>
+    <string name="enter_title">Please Enter The Title</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="mode">Ringer Mode :</string>
+    <string name="silent">Silent</string>
+    <string name="viber">Vibration</string>
+    <string name="title">Title</string>
+    <string name="no_places">No Places</string>
+    <string name="choose_a_place">Choose a place (Work , Cinema...) where silent or viberation mode will be automatically activated</string>
+    <string name="plan_time">Plan time when silent or vibration mode will be automatically activated</string>
+    <string name="no_schedules">No Schedules</string>
+    <string name="sunday">S</string>
+    <string name="monday">M</string>
+    <string name="friday">F</string>
+    <string name="place_name">Place Name :</string>
+    <string name="exp_cinema_work">Exp. Cinema , Work</string>
+    <string name="select_the_place">Select The Place :</string>
+    <string name="choose_the_radius">Choose the radius :</string>
+    <string name="wedn">W</string>
+    <string name="tues">T</string>
+    <string name="thurs">T</string>
+    <string name="satur">S</string>
+    <string name="choose_at_least">Please Choose at least one day of the week</string>
+    <string name="update">Update</string>
+    <string name="modify_location">Modify Location</string>
+    <string name="to_use_the_auto_silent_by_location_switch_the_button_above">To use the auto silent by location switch the button above</string>
+    <string name="choose_please">Please Choose a Place</string>
+    <string name="place_tilte_">Please Enter The Place Title</string>
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tuesd">Tues</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="frid">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="evr_day">Every Day</string>
+    <string name="language">Language</string>
+    <string name="eng">English</string>
+    <string name="fre">French</string>
+    <string name="spa">Spanish</string>
+    <string name="ara">Arabic</string>
+    <string name="title_activity_place_picker">Choose Place</string>
+    <string name="pick_place">Pick Place</string>
+</resources>
