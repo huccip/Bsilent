@@ -6,6 +6,7 @@ import com.bsilent.app.database.dao.PlacesDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class PlacesViewModel(
     private val placesDao: PlacesDao,
@@ -18,7 +19,14 @@ class PlacesViewModel(
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-
+    fun isActivated():Boolean{
+        places.value?.let {
+            for(place in it){
+                if(place.isEnabled) return true
+            }
+        }
+        return false
+    }
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
