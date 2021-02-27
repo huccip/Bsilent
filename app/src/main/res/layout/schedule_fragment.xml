@@ -8,7 +8,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/schedule_item"/>
 
     <LinearLayout
         android:id="@+id/empty"

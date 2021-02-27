@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Place(
-    @PrimaryKey(autoGenerate = true) var id:Long = -1,
+    @PrimaryKey(autoGenerate = true) var id:Long? = null,
     var lat:Double = 0.0,
     var lng:Double = 0.0,
     var name:String = "",

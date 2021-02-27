@@ -6,18 +6,33 @@ import androidx.lifecycle.ViewModelProvider
 import com.bsilent.app.database.dao.PlacesDao
 import com.bsilent.app.database.dao.ScheduleDao
 
-class MainViewModelFactory(
+class PlaceViewModelFactory(
     private val database: PlacesDao,
     private val application: Application
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlacesViewModel::class.java)) {
             return PlacesViewModel(database, application) as T
+        }else if(modelClass.isAssignableFrom(AddLocationViewModel::class.java)){
+            return AddLocationViewModel(database, application) as T
         }
         throw IllegalArgumentException("Unknow ViewModel class")
     }
 
 }
+
+//class AddPlaceViewModelFactory(
+//    private val database: PlacesDao,
+//    private val application: Application
+//) : ViewModelProvider.Factory {
+//    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//        if(modelClass.isAssignableFrom(AddLocationViewModel::class.java)){
+//            return PlacesViewModel(database, application) as T
+//        }
+//        throw IllegalArgumentException("Unknow ViewModel class")
+//    }
+//
+//}
 
 class ScheduleModelFactory(
     private val database: ScheduleDao,

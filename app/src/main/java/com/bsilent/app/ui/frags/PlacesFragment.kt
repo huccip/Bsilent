@@ -10,14 +10,13 @@ import com.bsilent.app.adapters.PlacesAdapter
 import com.bsilent.app.database.AppDatabase
 import com.bsilent.app.database.entities.Place
 import com.bsilent.app.databinding.PlacesFragmentBinding
-import com.bsilent.app.viewmodels.MainViewModelFactory
+import com.bsilent.app.viewmodels.PlaceViewModelFactory
 import com.bsilent.app.viewmodels.PlacesViewModel
 
 class PlacesFragment : Fragment() {
 
     private lateinit var viewModel: PlacesViewModel
 
-    private lateinit var places: List<Place>
     private lateinit var adapter: PlacesAdapter
 
     //binding
@@ -36,7 +35,7 @@ class PlacesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val mainViewModelFactory = MainViewModelFactory(
+        val mainViewModelFactory = PlaceViewModelFactory(
             AppDatabase.getInstance(requireContext().applicationContext).placesDao,
             requireNotNull(activity).application
         )
@@ -47,25 +46,22 @@ class PlacesFragment : Fragment() {
     }
 
     private fun setupRv() {
-        places = listOf()
-
+        adapter = PlacesAdapter()
         viewModel.places.observe(this, Observer {
-            places = it
+            adapter.places = it
             adapter.notifyDataSetChanged()
 
-            if (places.isEmpty()) {
+            if (adapter.places.isEmpty()) {
                 showEmptyView()
             } else {
                 hideEmptyView()
                 if (viewModel.isActivated()) {
-                    showTurnOnView()
-                } else {
                     hideTurnOnView()
+                } else {
+                    showTurnOnView()
                 }
             }
         })
-
-        adapter = PlacesAdapter(places)
 
         binding.rv.apply {
             setHasFixedSize(true)

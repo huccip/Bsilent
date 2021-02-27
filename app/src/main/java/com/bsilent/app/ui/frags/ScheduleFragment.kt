@@ -2,6 +2,7 @@ package com.bsilent.app.ui.frags
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bsilent.app.R
+import com.bsilent.app.adapters.ScheduleAdapter
 import com.bsilent.app.database.AppDatabase
 import com.bsilent.app.database.entities.Schedule
 import com.bsilent.app.databinding.ScheduleFragmentBinding
@@ -22,7 +24,7 @@ class ScheduleFragment : Fragment() {
     private var _binding:ScheduleFragmentBinding? = null
     private val binding:ScheduleFragmentBinding get() = _binding!!
 
-    private lateinit var shedules:List<Schedule>
+    private lateinit var adapter:ScheduleAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +44,10 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupRv() {
-        //todo create adapter
+        adapter = ScheduleAdapter(listOf())
         viewModel.schedules.observe(this, Observer {
-            shedules = it
-            //todo notify
-
+            adapter.schedules = it
+            adapter.notifyDataSetChanged()
             if(it.isEmpty()){
                 showEmpty()
             }else{
@@ -57,7 +58,7 @@ class ScheduleFragment : Fragment() {
         binding.rv.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            //todo assign the adapter to rv
+            adapter = this@ScheduleFragment.adapter
         }
     }
 

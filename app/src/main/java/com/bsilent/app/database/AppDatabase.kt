@@ -7,8 +7,9 @@ import androidx.room.RoomDatabase
 import com.bsilent.app.database.dao.PlacesDao
 import com.bsilent.app.database.dao.ScheduleDao
 import com.bsilent.app.database.entities.Place
+import com.bsilent.app.database.entities.Schedule
 
-@Database(entities = [Place::class],version = 1,exportSchema = true)
+@Database(entities = [Place::class, Schedule::class],version = 1,exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val placesDao:PlacesDao

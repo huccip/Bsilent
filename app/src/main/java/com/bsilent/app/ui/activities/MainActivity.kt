@@ -1,22 +1,28 @@
 package com.bsilent.app.ui.activities
 
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bsilent.app.R
 import com.bsilent.app.adapters.PagerAdapter
+import com.bsilent.app.database.AppDatabase
+import com.bsilent.app.database.entities.Schedule
 import com.bsilent.app.databinding.ActivityMainBinding
 import com.bsilent.app.ui.frags.PlacesFragment
 import com.bsilent.app.ui.frags.ScheduleFragment
+import com.bsilent.app.viewmodels.ScheduleModelFactory
+import com.bsilent.app.viewmodels.ScheduleViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var frags: List<Fragment>
+    private lateinit var viewModel: ScheduleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         setupTabs()
+        //todo delete this
+        val factory = ScheduleModelFactory(
+            AppDatabase.getInstance(this).scheduleDao,
+            application
+        )
+        viewModel = ViewModelProvider(this, factory).get(ScheduleViewModel::class.java)
     }
 
     private fun setupTabs() {
@@ -43,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    binding.locationFab.apply{
+                    binding.locationFab.apply {
                         setImageResource(R.drawable.ic_add_alarm)
                         setOnClickListener {
                             showAddScheduleDialog()
@@ -69,11 +81,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAddScheduleDialog() {
-        TODO("Not yet implemented")
+        viewModel.insert(
+            Schedule(
+                endTime = 213128,
+                isEnabled = false
+            )
+        )
     }
 
     private fun startAddLocationActivity() {
-        TODO("Not yet implemented")
+        Intent(this, PickerActivity::class.java).also {
+            startActivity(it)
+        }
     }
 
 

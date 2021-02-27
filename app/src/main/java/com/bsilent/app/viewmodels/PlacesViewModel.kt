@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 
 class PlacesViewModel(
     private val placesDao: PlacesDao,
-    private val app: Application
-) : AndroidViewModel(app) {
+    application: Application
+) : AndroidViewModel(application) {
 
     private val viewModelJob = Job()
 

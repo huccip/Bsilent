@@ -5,10 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Schedule(
-    @PrimaryKey(autoGenerate = true) var id:Long = -1L,
+    @PrimaryKey(autoGenerate = true) var id:Long? = null,
     var startTime:Long = 0,
     var endTime:Long = 0,
-    var name:String = "",
     var isEnabled:Boolean = true,
     var silent:Boolean = true,
     var monday:Boolean = true,
