@@ -44,7 +44,7 @@ class PickerActivity : AppCompatActivity(), OnMapReadyCallback {
         viewModel = ViewModelProvider(this, factory).get(AddLocationViewModel::class.java)
         viewModel.isInserted.observe(this, Observer {
             if(it){
-                finish()
+                onBackPressed()
             }
         })
         binding.done.setOnClickListener {

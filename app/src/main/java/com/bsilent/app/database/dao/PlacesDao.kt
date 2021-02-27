@@ -22,4 +22,9 @@ interface PlacesDao {
     @Query("SELECT * FROM place WHERE id = :key")
     fun get(key:Long):LiveData<Place>
 
+    @Query("SELECT * FROM place WHERE isEnabled= 1")
+    fun isEnabled():LiveData<List<Place>>
+
+    @Query("UPDATE place SET isEnabled = :e")
+    fun setEnable(e:Boolean)
 }

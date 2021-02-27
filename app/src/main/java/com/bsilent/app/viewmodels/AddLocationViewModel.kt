@@ -28,16 +28,20 @@ class AddLocationViewModel(
     var radius = MutableLiveData(70)
     var isSilent = MutableLiveData(true)
     var placeName = MutableLiveData("")
-
+    var nameError = MutableLiveData<String?>(null)
 
     init {
         _isInserted.value = false
     }
 
     fun savePlace(bitmap: Bitmap) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                var img = saveImage(bitmap)
+//        if (placeName.value.isNullOrEmpty()){
+//            nameError.value = app.getString(R.string)
+//            return
+//        }
+        viewModelScope.launch(Dispatchers.IO) {
+
+                val img = saveImage(bitmap)
                 placesDao.insert(
                     Place(
                         lat = latlng.value?.latitude ?: 0.0,
@@ -45,9 +49,11 @@ class AddLocationViewModel(
                         radius = radius.value?:70,
                         silent = isSilent.value?:true,
                         img = img,
-                        name = placeName.value?:"Place"
+                        name = placeName.value?:"Place",
+                        isEnabled = true
                         )
                 )
+            withContext(Dispatchers.Main) {
                 _isInserted.value = true
             }
 

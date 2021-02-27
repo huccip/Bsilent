@@ -18,6 +18,9 @@
             android:id="@+id/tabs"
             android:layoutDirection="ltr"
             android:background="#0000"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="2dp"
+            app:tabIndicatorAnimationMode="elastic"
             android:layout_height="wrap_content"/>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager2.widget.ViewPager2

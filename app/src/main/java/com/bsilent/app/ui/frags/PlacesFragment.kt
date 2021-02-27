@@ -42,7 +42,27 @@ class PlacesFragment : Fragment() {
         viewModel = ViewModelProvider(this, mainViewModelFactory).get(PlacesViewModel::class.java)
 
         setupRv()
+        setupSwitch()
+    }
 
+    private fun setupSwitch() {
+        viewModel.isEnabled.observe(this, Observer {
+            if(adapter.places.isNotEmpty()){
+                if(it){
+                    hideTurnOnView()
+                }else{
+                    showTurnOnView()
+                }
+            }
+        })
+        binding.switchLoc.setOnCheckedChangeListener { _, b ->
+            if(b){
+                viewModel.enableAll()
+            }else{
+                viewModel.disableAll()
+            }
+
+        }
     }
 
     private fun setupRv() {
@@ -55,11 +75,6 @@ class PlacesFragment : Fragment() {
                 showEmptyView()
             } else {
                 hideEmptyView()
-                if (viewModel.isActivated()) {
-                    hideTurnOnView()
-                } else {
-                    showTurnOnView()
-                }
             }
         })
 
@@ -94,6 +109,7 @@ class PlacesFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+//        activity?.menuInflater.inflate(R.menu.)
     }
 
     override fun onDestroyView() {
