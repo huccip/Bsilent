@@ -19,7 +19,11 @@
             android:layoutDirection="ltr"
             android:background="#0000"
             app:tabIndicatorFullWidth="false"
-            app:tabIndicatorHeight="2dp"
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="?attr/colorOnPrimary"
+            app:tabIndicatorColor="?attr/colorSecondary"
+            app:tabIconTint="@color/tabs_color"
+            app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorAnimationMode="elastic"
             android:layout_height="wrap_content"/>
     </com.google.android.material.appbar.AppBarLayout>
