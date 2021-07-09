@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Bsilent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimary">@color/accent</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -11,6 +11,14 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="colorControlHighlight">@color/accentTransparent</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <color name="bgColor">#121212</color>
+
+    <style name="SplashScreen" parent="Theme.Bsilent">
+        <item name="android:windowBackground">@drawable/splach_bg</item>
+    </style>
+
 </resources>

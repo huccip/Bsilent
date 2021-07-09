@@ -11,8 +11,19 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="colorControlHighlight">@color/accentTransparent</item>
         <!-- Customize your theme here. -->
     </style>
 
     <color name="gray">#727272</color>
+    <color name="bgColor">#fff</color>
+    <style name="SplashScreen" parent="Theme.Bsilent">
+        <item name="android:windowBackground">@drawable/splach_bg</item>
+    </style>
+
+    <style name="appbarStyle">
+        <item name="background">@color/white</item>
+        <item name="elevation">5dp</item>
+    </style>
+
 </resources>

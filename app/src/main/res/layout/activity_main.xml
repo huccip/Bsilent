@@ -6,12 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="?attr/actionBarPopupTheme"
+            android:animateLayoutChanges="true"
             app:layout_scrollFlags="scroll|enterAlways"/>
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"

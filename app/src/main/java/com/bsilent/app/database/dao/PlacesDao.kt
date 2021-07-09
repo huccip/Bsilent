@@ -14,7 +14,7 @@ interface PlacesDao {
     fun update(place: Place)
 
     @Delete
-    fun delete(place: Place)
+    fun delete(vararg place: Place)
 
     @Query("SELECT * FROM place")
     fun getAll():LiveData<List<Place>>
@@ -26,5 +26,8 @@ interface PlacesDao {
     fun isEnabled():LiveData<List<Place>>
 
     @Query("UPDATE place SET isEnabled = :e")
-    fun setEnable(e:Boolean)
+    fun setAllEnable(e:Boolean)
+
+
+
 }

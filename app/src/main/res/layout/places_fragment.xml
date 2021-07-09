@@ -13,8 +13,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/switch_color"
+            android:layout_height="wrap_content"
+            android:background="@drawable/switch_bg"
             android:elevation="4dp"
             android:orientation="horizontal">
 
@@ -25,12 +25,10 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:checked="true"
                 android:text="@string/on"
                 android:textColor="#FFFFFF"
-                android:textOff="@string/off"
-                android:textOn="@string/on"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </FrameLayout>

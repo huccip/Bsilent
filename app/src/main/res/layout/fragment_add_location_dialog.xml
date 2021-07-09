@@ -30,6 +30,7 @@
         android:layout_height="0dp"
         android:text="@string/add_new_location"
         android:gravity="center"
+        android:id="@+id/dialog_title"
         app:layout_constraintBottom_toBottomOf="@id/save"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/save"
@@ -43,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@id/save"/>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:id="@+id/mapContainer"
         app:layout_constraintTop_toBottomOf="@id/line">
 
@@ -51,10 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
-        <com.google.android.gms.maps.MapView
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:id="@+id/mapView"/>
+
     </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -62,10 +60,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/mapContainer"
         android:layout_margin="12dp"
+        app:boxStrokeColor="@color/accent"
+        app:hintTextColor="@color/accent"
         android:id="@+id/titleIL">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textCursorDrawable="@color/accent"
             android:hint="@string/place_name"
             android:id="@+id/titleEt"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -81,8 +82,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:min="50"
-        android:max="300"
+        android:min="30"
+        android:max="250"
         android:id="@+id/radius_seekbar"
         app:layout_constraintTop_toBottomOf="@id/radius_tv"/>
     <TextView

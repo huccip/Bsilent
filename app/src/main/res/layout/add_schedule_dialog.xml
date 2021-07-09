@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="0dp"
+    app:cardBackgroundColor="?attr/colorSecondary"
+    app:cardCornerRadius="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:text="@string/add_new_schedule"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="12dp"
+                android:background="?attr/colorBackgroundFloating">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_layout"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/accent"
+                    app:hintTextColor="@color/accent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/titleEt"
+                        android:textCursorDrawable="@color/accent"
+                        android:hint="@string/title" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time"
+                    android:layout_marginStart="7dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/time_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteX="12dp" />
+
+                <Button
+                    android:id="@+id/time_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_time"
+                    tools:text="12:12"
+                    android:textSize="22sp"
+                    android:layout_marginTop="7dp"
+                    android:paddingHorizontal="12dp"
+                    android:background="@drawable/time_btn_bg"
+                    android:paddingVertical="3dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintHorizontal_bias=".6"
+                    app:layout_constraintTop_toBottomOf="@id/txt_layout" />
+                <TextView
+                    android:id="@+id/tv_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/duration"
+                    android:layout_marginStart="7dp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/hour_spinner"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <Spinner
+                    android:id="@+id/hour_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="140dp"
+                    android:padding="12dp"
+                    app:layout_constraintHorizontal_bias=".6"
+                    app:layout_constraintStart_toEndOf="@id/tv_sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/time_btn" />
+
+                <RadioGroup
+                    android:id="@+id/radio_grp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="3dp"
+                    app:layout_constraintTop_toBottomOf="@id/hour_spinner">
+
+                    <RadioButton
+                        android:id="@+id/mode_silent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:paddingHorizontal="12dp"
+                        android:text="@string/silent" />
+
+                    <RadioButton
+                        android:id="@+id/mode_viber"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingHorizontal="12dp"
+                        android:text="@string/viber" />
+
+                </RadioGroup>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/days"
+                    android:id="@+id/tv_days"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="7dp"
+                    app:layout_constraintTop_toBottomOf="@id/radio_grp"/>
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrl"
+                    android:requiresFadingEdge="horizontal"
+                    android:fadingEdgeLength="20dp"
+                    android:layout_marginTop="3dp"
+                    android:scrollbars="none"
+                    app:layout_constraintTop_toBottomOf="@id/tv_days"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/sun"
+                            android:text="@string/sunday"
+                            style="@style/DayCheckboxStyle"
+                            android:background="@drawable/days_bg"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/mon"
+                            style="@style/DayCheckboxStyle"
+                            android:text="@string/monday"
+                            android:background="@drawable/days_bg"
+                            android:checked="true"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/turs"
+                            style="@style/DayCheckboxStyle"
+                            android:text="@string/tues"
+                            android:background="@drawable/days_bg"
+                            android:checked="true"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/wedn"
+                            style="@style/DayCheckboxStyle"
+                            android:text="@string/wedn"
+                            android:background="@drawable/days_bg"
+                            android:checked="true"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/thurs"
+                            style="@style/DayCheckboxStyle"
+                            android:text="@string/thurs"
+                            android:background="@drawable/days_bg"
+                            android:checked="true"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/fri"
+                            style="@style/DayCheckboxStyle"
+                            android:text="@string/friday"
+                            android:background="@drawable/days_bg"
+                            android:checked="true"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/sat"
+                            style="@style/DayCheckboxStyle"
+                            android:text="@string/satur"
+                            android:background="@drawable/days_bg"
+                            />
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+
+                <Button
+                    android:id="@+id/cancel"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:textColor="?attr/colorSecondary"
+                    android:paddingHorizontal="32dp"
+                    android:layout_marginTop="7dp"
+                    app:layout_constraintEnd_toStartOf="@+id/add"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/scrl" />
+
+                <Button
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="?attr/colorSecondary"
+                    android:paddingHorizontal="32dp"
+                    android:text="@string/add"
+                    android:textColor="?attr/colorOnSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cancel"
+                    app:layout_constraintBaseline_toBaselineOf="@id/cancel"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

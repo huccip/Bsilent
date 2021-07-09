@@ -1,0 +1,15 @@
+package com.bsilent.app.other
+
+object Constants {
+
+    const val NOTIFICATION_CHANNEL_ID = "bsilent"
+    const val NOTIFICATION_CHANNEL_NAME = "Bsilent"
+    const val NOTIFICATION_ID = 1
+
+
+    const val START_SCHEDULE_SERVICE_ACTION = "START_SCHEDULE_SERVICE_ACTION"
+    const val CANCEL_SCHEDULE_SERVICE_ACTION = "CANCEL_SCHEDULE_SERVICE_ACTION"
+
+
+    const val CANCEL_PLACE_SERVICE_ACTION = "CANCEL_PLACE_SERVICE_ACTION"
+}

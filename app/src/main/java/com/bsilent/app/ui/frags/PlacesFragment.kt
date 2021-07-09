@@ -3,75 +3,83 @@ package com.bsilent.app.ui.frags
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bsilent.app.R
 import com.bsilent.app.adapters.PlacesAdapter
-import com.bsilent.app.database.AppDatabase
-import com.bsilent.app.database.entities.Place
 import com.bsilent.app.databinding.PlacesFragmentBinding
-import com.bsilent.app.viewmodels.PlaceViewModelFactory
 import com.bsilent.app.viewmodels.PlacesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PlacesFragment : Fragment() {
 
-    private lateinit var viewModel: PlacesViewModel
+    private val viewModel: PlacesViewModel by activityViewModels()
 
     private lateinit var adapter: PlacesAdapter
 
-    //binding
+
     private var _binding: PlacesFragmentBinding? = null
     private val binding: PlacesFragmentBinding get() = _binding!!
+
+    private var menu: Menu? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = PlacesFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val mainViewModelFactory = PlaceViewModelFactory(
-            AppDatabase.getInstance(requireContext().applicationContext).placesDao,
-            requireNotNull(activity).application
-        )
-        viewModel = ViewModelProvider(this, mainViewModelFactory).get(PlacesViewModel::class.java)
-
-        setupRv()
-        setupSwitch()
+        setHasOptionsMenu(true)
+        initRv()
+        initSwitch()
+        initMenu()
     }
 
-    private fun setupSwitch() {
-        viewModel.isEnabled.observe(this, Observer {
-            if(adapter.places.isNotEmpty()){
-                if(it){
-                    hideTurnOnView()
-                }else{
-                    showTurnOnView()
-                }
+    private fun initMenu() {
+        viewModel.selected.observe(viewLifecycleOwner){
+            setMenuDeleteVisibility(!it.isNullOrEmpty())
+        }
+    }
+
+    private fun setMenuDeleteVisibility(vis: Boolean) {
+        menu?.findItem(R.id.menu_delete)?.isVisible = vis
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    private fun initSwitch() {
+        viewModel.isEnabled.observe(viewLifecycleOwner, {
+            if (adapter.differ.currentList.isNotEmpty()) {
+                setSwitchOnOff(it)
             }
         })
-        binding.switchLoc.setOnCheckedChangeListener { _, b ->
-            if(b){
-                viewModel.enableAll()
-            }else{
-                viewModel.disableAll()
+        binding.switchLoc.setOnCheckedChangeListener { s, b ->
+            if (b) {
+                viewModel.enableAll(requireContext())
+                s.text = getString(R.string.on)
+            } else {
+                viewModel.disableAll(requireContext())
+                s.text = getString(R.string.off)
             }
 
         }
     }
 
-    private fun setupRv() {
-        adapter = PlacesAdapter()
-        viewModel.places.observe(this, Observer {
-            adapter.places = it
-            adapter.notifyDataSetChanged()
+    private fun initRv() {
+        adapter = PlacesAdapter(viewModel = viewModel)
+        viewModel.places.observe(viewLifecycleOwner, {
+            adapter.submitList(it)
+            viewModel.isEnabled.value?.let { on ->
+                setSwitchOnOff(on)
+            }
 
-            if (adapter.places.isEmpty()) {
+            if (it.isEmpty()) {
                 showEmptyView()
             } else {
                 hideEmptyView()
@@ -86,6 +94,23 @@ class PlacesFragment : Fragment() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.schedule_menu,menu)
+        this.menu = menu
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        setMenuDeleteVisibility(!viewModel.selected.value.isNullOrEmpty())
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menu_delete -> viewModel.deleteSelected(requireContext())
+        }
+        return super.onOptionsItemSelected(item)
+    }
     private fun showTurnOnView() {
         binding.turnedOffLayout.visibility = View.VISIBLE
         binding.rv.visibility = View.GONE
@@ -107,9 +132,20 @@ class PlacesFragment : Fragment() {
         binding.main.visibility = View.VISIBLE
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-//        activity?.menuInflater.inflate(R.menu.)
+    private fun setSwitchOnOff(on: Boolean) {
+        if (on) {
+            binding.switchLoc.apply {
+                text = getString(R.string.on)
+                isChecked = true
+            }
+            hideTurnOnView()
+        } else {
+            binding.switchLoc.apply {
+                text = getString(R.string.off)
+                isChecked = false
+            }
+            showTurnOnView()
+        }
     }
 
     override fun onDestroyView() {

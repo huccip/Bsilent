@@ -1,21 +1,36 @@
 package com.bsilent.app.database.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcelable
+import androidx.room.*
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity
 data class Schedule(
     @PrimaryKey(autoGenerate = true) var id:Long? = null,
-    var startTime:Long = 0,
-    var endTime:Long = 0,
+    var name:String = "",
+    var hour:Int = 0,
+    var min:Int = 0,
+    var duration:Int = 1,
     var isEnabled:Boolean = true,
-    var silent:Boolean = true,
-    var monday:Boolean = true,
-    var tuesday:Boolean = true,
-    var wednesday:Boolean = true,
-    var thursday:Boolean = true,
-    var friday:Boolean = true,
-    var saturday:Boolean = true,
-    var sunday:Boolean = true
+    var silent:Boolean = true
+    ) : Parcelable
 
+data class ScheduleWithDays(
+    @Embedded
+    var schedule: Schedule,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "scheduleId"
     )
+    var days: List<Day>
+){
+    @Ignore
+    var isSelected = false
+}
+
+@Entity(primaryKeys = ["scheduleId","day"])
+data class Day(
+    var scheduleId:Long = -1,
+    var day: Int = -1
+)

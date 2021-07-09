@@ -2,24 +2,36 @@ package com.bsilent.app.ui.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bsilent.app.R
-import com.bsilent.app.database.AppDatabase
 import com.bsilent.app.databinding.ActivityPickerBinding
 import com.bsilent.app.ui.frags.AddLocationDialogFragment
 import com.bsilent.app.viewmodels.AddLocationViewModel
-import com.bsilent.app.viewmodels.PlaceViewModelFactory
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class PickerActivity : AppCompatActivity(), OnMapReadyCallback {
+@AndroidEntryPoint
+class PickerActivity : AppCompatActivity() {
+    private val CHECK_LOCATION_REQUEST: Int = 133
     private val LOCATION_PERMISSION_REQUEST = 912
 
     private lateinit var map: GoogleMap
@@ -27,60 +39,104 @@ class PickerActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var frag: AddLocationDialogFragment
 
-    private lateinit var viewModel: AddLocationViewModel
+    private val viewModel: AddLocationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupToolbar()
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
 
-        frag = AddLocationDialogFragment()
+        lifecycleScope.launch(Dispatchers.Main) {
+            val mapFragment = SupportMapFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.map, mapFragment)
+                .commit()
 
-        val factory = PlaceViewModelFactory(
-            AppDatabase.getInstance(applicationContext).placesDao,
-            application
-        )
-        viewModel = ViewModelProvider(this, factory).get(AddLocationViewModel::class.java)
-        viewModel.isInserted.observe(this, Observer {
+            frag = AddLocationDialogFragment()
+
+            mapFragment.getMapAsync {
+                binding.progress.visibility = View.GONE
+                map = it
+                if (ActivityCompat.checkSelfPermission(
+                        this@PickerActivity,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    map.isMyLocationEnabled = true
+                }
+            }
+            checkLocation()
+        }
+
+        requestPermission()
+
+        viewModel.isInserted.observe(this) {
             if (it) {
                 onBackPressed()
             }
-        })
+        }
         binding.done.setOnClickListener {
             viewModel.latlng.value = map.cameraPosition.target
             AddLocationDialogFragment().show(supportFragmentManager, "add_loc")
         }
     }
 
+    private fun checkPermissions(): Boolean {
+        val foregroundLocationApproved = (
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION))
+        val backgroundPermissionApproved =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            this, Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        )
+            } else {
+                true
+            }
+        return foregroundLocationApproved && backgroundPermissionApproved
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun animateCamToCurrentPos() {
+
+        LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnSuccessListener {
+            it?.let {
+                map.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            it.latitude, it.longitude
+                        ),
+                        16.5f
+                    )
+                )
+            }
+        }
+    }
+
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
-            title = "Pick Place"
+            title = getString(R.string.pick_place)
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            map.isMyLocationEnabled = true
-        } else {
-            requestPermission()
-        }
-
-    }
-
     private fun requestPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),LOCATION_PERMISSION_REQUEST)
+        if(checkPermissions()) return
+
+        var permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            permissions += Manifest.permission.ACCESS_BACKGROUND_LOCATION
+        }
+        ActivityCompat.requestPermissions(
+            this,
+            permissions,
+            LOCATION_PERMISSION_REQUEST
+        )
     }
 
 
@@ -96,14 +152,49 @@ class PickerActivity : AppCompatActivity(), OnMapReadyCallback {
         return super.onSupportNavigateUp()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == LOCATION_PERMISSION_REQUEST && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            map.isMyLocationEnabled = true
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    map.isMyLocationEnabled = true
+                }
+            }
+        }
+    }
+
+    private fun checkLocation() {
+        LocationServices.getSettingsClient(this).checkLocationSettings(
+            LocationSettingsRequest.Builder().addLocationRequest(
+                LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(10000)
+                    .setFastestInterval(5000)
+            ).setAlwaysShow(true)
+                .build()
+        ).addOnSuccessListener {
+            animateCamToCurrentPos()
+        }
+            .addOnFailureListener {
+                if (it is ResolvableApiException) {
+                    try {
+                        it.startResolutionForResult(this, CHECK_LOCATION_REQUEST)
+                    } catch (sendEx: IntentSender.SendIntentException) {
+                    }
+
+                }
+            }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CHECK_LOCATION_REQUEST && resultCode == RESULT_OK) {
+            animateCamToCurrentPos()
         }
     }
 }

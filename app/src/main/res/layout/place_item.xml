@@ -6,19 +6,23 @@
     android:layout_height="wrap_content">
 
     <FrameLayout
-        android:id="@+id/select_loc_layout"
+        android:id="@+id/select_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#5080deea"
-        android:visibility="gone" />
+        android:background="?attr/colorControlHighlight"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
-    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="9dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        app:cardCornerRadius="5dp">
+        android:layout_marginBottom="7dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,23 +34,20 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop" />
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/is_enable_sw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="17dp"
-                android:layout_marginEnd="18dp"
-                android:layout_marginRight="18dp" />
+                android:layout_marginEnd="18dp" />
 
             <TextView
                 android:id="@+id/name_loc_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/place_item_txt_bg"
                 android:paddingLeft="12dp"
@@ -60,12 +61,12 @@
                 tools:text="alaoui" />
 
             <ImageView
-                android:id="@+id/mode_img_rv"
+                android:id="@+id/mode_img"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="9dp"
+                android:layout_margin="12dp"
                 tools:src="@drawable/ic_silent" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

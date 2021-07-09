@@ -60,4 +60,19 @@
     <string name="ara">Arabic</string>
     <string name="title_activity_place_picker">Choose Place</string>
     <string name="pick_place">Pick Place</string>
+    <string name="field_required">This Field is Required</string>
+    <string name="add_new_schedule">Add New Schedule</string>
+    <string name="no_name">No name</string>
+    <string name="days">"Days : "</string>
+    <string name="hour">Hour</string>
+    <string name="duration">Duration</string>
+    <string name="time">Time</string>
+    <string name="modifie_location">Modifie Location</string>
+    <string name="mode_silent">Mode Silent</string>
+    <string name="mode_vibration">Vibration Mode</string>
+    <string name="permission_req">Permission Request</string>
+    <string name="perm_msg">Bsilent need permission to set silent/vibration mode in your device</string>
+    <string name="allow">Allow</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="privacy">Privacy Policy</string>
 </resources>
