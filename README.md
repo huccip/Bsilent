@@ -1,5 +1,5 @@
 # Bsilent
-Simple Application that enables the silent or vibration mode on your phone automatically when you are at school, work ...
+Simple Application that enables the silent or vibration mode on your phone automatically when you are at school, work or any custom location on your map.
 
 
 <p align="center">
